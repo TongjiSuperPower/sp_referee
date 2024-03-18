@@ -1,0 +1,6 @@
+<launch>
+	<rosparam file="$(find sp_referee)/config/engineer.yaml" command="load"/>
+	
+	<node name="engineer_referee" pkg="sp_referee" type="sp_referee" respawn="false" output="screen"/>
+
+</launch>

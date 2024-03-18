@@ -1,0 +1,30 @@
+referee: # infantry
+  use_image_transmission_link: true
+  read:
+    - 0x0001 # GameStatus
+    - 0x0002 # GameResult
+    - 0x0003 # GameRobotHp
+
+    - 0x0101 # EventData
+    - 0x0102 # ExtSupplyProjectileAction
+    - 0x0104 # RefereeWarning
+
+    - 0x0201 # RobotStatus
+    - 0x0202 # PowerHeatData
+    - 0x0203 # RobotPose
+    - 0x0204 # Buff
+    - 0x0206 # HurtData
+    - 0x0207 # ShootData
+    - 0x0208 # ProjectileAllowance
+    - 0x0209 # Rfid_Status
+    - 0x020B # GroundRobotPosition
+
+    - 0x0301 # RobotInteractionData
+    - 0x0304 # RemoteControl
+
+  write:
+    - 0x0301 # RobotInteractionData
+    - 0x0308 # CustomInfo
+
+s
+      

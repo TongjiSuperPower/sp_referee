@@ -1,0 +1,9 @@
+float32 chassis_voltage
+float32 chassis_current
+float32 chassis_power
+uint16 buffer_energy
+uint16 shooter_17mm_1_barrel_heat
+uint16 shooter_17mm_2_barrel_heat
+uint16 shooter_42mm_barrel_heat
+
+time stamp
