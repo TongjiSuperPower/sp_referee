@@ -41,7 +41,6 @@ namespace sp_referee
         {
             if (unpack_buffer_[k_i] == 0xA5)
             {
-             
                 frame_len = unpack(&unpack_buffer_[k_i]);
                 if (frame_len != -1)
                     k_i += frame_len;
@@ -84,6 +83,8 @@ namespace sp_referee
         {
             if (unpack_buffer_[k_i] == 0xA5)
             {
+                // ROS_INFO_STREAM("AAAAAAA")>;
+             
                 frame_len = unpack(&unpack_buffer_[k_i]);
                 if (frame_len != -1)
                     k_i += frame_len;
@@ -97,13 +98,15 @@ namespace sp_referee
     // | frame_header:5 bytes | cmd_id:2 bytes | data: n bytes | frame_tail: 2 bytes |
 
     int Referee::unpack(uint8_t* rx_data)
-    {
+    {                // cmd_id = (rx_data[6] << 8 | rx_data[5]);
+                // ROS_INFO_STREAM(std::hex <<"CMD_ID:"<< cmd_id);
         uint16_t cmd_id;
         int frame_len;
         sp_referee::FrameHeader frame_header;
 
         memcpy(&frame_header, rx_data, frame_header_length_);
-
+                // cmd_id = (rx_data[6] << 8 | rx_data[5]);+
+        ROS_INFO_STREAM(std::hex <<"CMD_ID if前:"<< cmd_id);
 
         if (static_cast<bool>(check_.verifyCRC8CheckSum(rx_data, frame_header_length_)))
         {
@@ -119,6 +122,8 @@ namespace sp_referee
             {
                
                 cmd_id = (rx_data[6] << 8 | rx_data[5]);
+                ROS_INFO_STREAM(std::hex <<"CMD_ID:"<< cmd_id);
+
                 auto it = std::find(read_cmd_.begin(), read_cmd_.end(), cmd_id);
                 if ((it == read_cmd_.end()))
                     return frame_len;
@@ -421,11 +426,39 @@ namespace sp_referee
                     }
                     case sp_referee::CUSTOM_ROBOT_DATA_CMD:
                     {
-                        sp_referee::CustomRobotData custom_robot_data_ref;
-                        // sp_referee::CustomRobotDataMsg custom_robot_data;
-                        memcpy(&custom_robot_data_ref, rx_data + 7, sizeof(sp_referee::CustomRobotData));
+                        sp_referee::CustomRobotData custom_robot_data;
+                        sp_referee::CustomRobotDataMsg custom_robot_data_ref;
+                        memcpy(&custom_robot_data_ref, rx_data + 7, sizeof(sp_referee::CustomRobotDataMsg));
                         
+                        last_matrix = current_matrix;
+                        last_time = current_time;
                         
+                        double w = 0.0001*(int16_t)((custom_robot_data_ref.data[0] << 8) | custom_robot_data_ref.data[1]);
+                        double x = 0.0001*(int16_t)((custom_robot_data_ref.data[2] << 8) | custom_robot_data_ref.data[3]);
+                        double y = 0.0001*(int16_t)((custom_robot_data_ref.data[4] << 8) | custom_robot_data_ref.data[5]);
+                        double z = 0.0001*(int16_t)((custom_robot_data_ref.data[6] << 8) | custom_robot_data_ref.data[7]);
+                        Eigen::Quaterniond quat(w, x, y, z);
+                        quat.normalized(); 
+                        current_matrix = quat.toRotationMatrix();
+                        current_time = ros::Time::now();
+                        ros::Duration duration = current_time - last_time;
+                        double secs = duration.toSec();
+                        Eigen::Matrix3d vel_matrix = current_matrix.inverse()*(current_matrix - last_matrix) /secs;
+                        //ROS_INFO_STREAM("last_matrix: \n" << last_matrix);
+                        //ROS_INFO_STREAM("current_matrix: \n" << current_matrix);
+                        ROS_INFO_STREAM("vel_matrix: \n" << vel_matrix);
+                        custom_robot_data.wx_vel_ = (vel_matrix(2, 1) -  vel_matrix(1, 2)) / 2;
+                        custom_robot_data.wy_vel_ = (vel_matrix(0, 2) -  vel_matrix(2, 0)) / 2;
+                        custom_robot_data.wz_vel_ = (vel_matrix(1, 0) -  vel_matrix(0, 1)) / 2;
+
+                        cmd_velocity.angular.x = custom_robot_data.wx_vel_;
+                        cmd_velocity.angular.y = custom_robot_data.wy_vel_;
+                        cmd_velocity.angular.z = custom_robot_data.wz_vel_;
+                        // sensor_msgs::Imu cmd_imu;
+                        // cmd_imu.orientation = cmd_quat;
+                        // imu_pub_.publish(cmd_imu);
+                        velocity_pub_.publish(cmd_velocity);
+                        // ROS_INFO_STREAM("收到了");
                         // map_robot_data.target_robot_id = map_robot_data_ref.target_robot_id_;
                         // map_robot_data.target_position_x = map_robot_data_ref.target_position_x_;
                         // map_robot_data.target_position_y = map_robot_data_ref.target_position_y_;
@@ -454,31 +487,31 @@ namespace sp_referee
                         sp_referee::RemoteControlMsg remote_control;
                         memcpy(&remote_control_ref, rx_data + 7, sizeof(sp_referee::RemoteControl));
                                             
-                        remote_control.m_x = remote_control_ref.mouse_x_;
-                        remote_control.m_y = remote_control_ref.mouse_y_;
-                        remote_control.m_z = remote_control_ref.mouse_z_;
-                        remote_control.p_l = remote_control_ref.left_button_down_;
-                        remote_control.p_r = remote_control_ref.right_button_down_;
+                        // remote_control.m_x = remote_control_ref.mouse_x_;
+                        // remote_control.m_y = remote_control_ref.mouse_y_;
+                        // remote_control.m_z = remote_control_ref.mouse_z_;
+                        // remote_control.p_l = remote_control_ref.left_button_down_;
+                        // remote_control.p_r = remote_control_ref.right_button_down_;
 
-                        remote_control.key_w = remote_control_ref.keyboard_value_ & 0x01 ? true : false;
-                        remote_control.key_s = remote_control_ref.keyboard_value_ & 0x02 ? true : false;
-                        remote_control.key_a = remote_control_ref.keyboard_value_ & 0x04 ? true : false;
-                        remote_control.key_d = remote_control_ref.keyboard_value_ & 0x08 ? true : false;
-                        remote_control.key_shift = remote_control_ref.keyboard_value_ & 0x10 ? true : false;
-                        remote_control.key_ctrl = remote_control_ref.keyboard_value_ & 0x02 ? true : false;
-                        remote_control.key_q = remote_control_ref.keyboard_value_ & 0x40 ? true : false;
-                        remote_control.key_e = remote_control_ref.keyboard_value_ & 0x80 ? true : false;
-                        remote_control.key_r = (remote_control_ref.keyboard_value_ >> 8) & 0x01 ? true : false;
-                        remote_control.key_f = (remote_control_ref.keyboard_value_ >> 8) & 0x02 ? true : false;
-                        remote_control.key_g = (remote_control_ref.keyboard_value_ >> 8) & 0x04 ? true : false;
-                        remote_control.key_z = (remote_control_ref.keyboard_value_ >> 8) & 0x08 ? true : false;
-                        remote_control.key_x = (remote_control_ref.keyboard_value_ >> 8) & 0x10 ? true : false;
-                        remote_control.key_c = (remote_control_ref.keyboard_value_ >> 8) & 0x20 ? true : false;
-                        remote_control.key_v = (remote_control_ref.keyboard_value_ >> 8) & 0x40 ? true : false;
-                        remote_control.key_b = (remote_control_ref.keyboard_value_ >> 8) & 0x80 ? true : false;
+                        // remote_control.key_w = remote_control_ref.keyboard_value_ & 0x01 ? true : false;
+                        // remote_control.key_s = remote_control_ref.keyboard_value_ & 0x02 ? true : false;
+                        // remote_control.key_a = remote_control_ref.keyboard_value_ & 0x04 ? true : false;
+                        // remote_control.key_d = remote_control_ref.keyboard_value_ & 0x08 ? true : false;
+                        // remote_control.key_shift = remote_control_ref.keyboard_value_ & 0x10 ? true : false;
+                        // remote_control.key_ctrl = remote_control_ref.keyboard_value_ & 0x02 ? true : false;
+                        // remote_control.key_q = remote_control_ref.keyboard_value_ & 0x40 ? true : false;
+                        // remote_control.key_e = remote_control_ref.keyboard_value_ & 0x80 ? true : false;
+                        // remote_control.key_r = (remote_control_ref.keyboard_value_ >> 8) & 0x01 ? true : false;
+                        // remote_control.key_f = (remote_control_ref.keyboard_value_ >> 8) & 0x02 ? true : false;
+                        // remote_control.key_g = (remote_control_ref.keyboard_value_ >> 8) & 0x04 ? true : false;
+                        // remote_control.key_z = (remote_control_ref.keyboard_value_ >> 8) & 0x08 ? true : false;
+                        // remote_control.key_x = (remote_control_ref.keyboard_value_ >> 8) & 0x10 ? true : false;
+                        // remote_control.key_c = (remote_control_ref.keyboard_value_ >> 8) & 0x20 ? true : false;
+                        // remote_control.key_v = (remote_control_ref.keyboard_value_ >> 8) & 0x40 ? true : false;
+                        // remote_control.key_b = (remote_control_ref.keyboard_value_ >> 8) & 0x80 ? true : false;
 
-                        remote_control.stamp = last_get_data_time_;
-                        remote_control_pub_.publish(remote_control);
+                        // remote_control.stamp = last_get_data_time_;
+                        // remote_control_pub_.publish(remote_control);
                         break;
                     }
                     default:

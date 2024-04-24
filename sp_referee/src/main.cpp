@@ -17,8 +17,9 @@ int main(int argc, char** argv)
   {
     
     referee.read();
+    // ROS_INFO_STREAM("referee.getImageTrasmission()" << referee.getImageTrasmission());
     // if (referee.getImageTrasmission())
-    //   referee.readImageTrasmission();
+    //referee.readImageTrasmission();
     ros::spinOnce();
     //referee.write();
     //referee.sendUi(); 

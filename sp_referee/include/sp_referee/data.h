@@ -284,13 +284,15 @@ namespace sp_referee
 
     typedef struct
     {
-        int16_t mouse_x_;
-        int16_t mouse_y_;
-        int16_t mouse_z_;
-        int8_t left_button_down_;
-        int8_t right_button_down_;
-        uint16_t keyboard_value_;
-        uint16_t reserved_;
+        uint8_t data[30];
+        uint16_t tail;
+    }__packed CustomRobotDataMsg; // 0X0302 for engineer's custom controller
+
+
+    typedef struct
+    {
+        uint8_t data[8];
+        uint16_t tail;
     }__packed RemoteControl; // 0X0304
 
     typedef struct

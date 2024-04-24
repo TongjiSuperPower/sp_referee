@@ -10,7 +10,7 @@ namespace sp_referee
     bool Referee::init()
     {
         serial::Timeout timeout = serial::Timeout::simpleTimeout(50);
-        serial_.setPort("/dev/ttyUSB0");
+        serial_.setPort("/dev/FT232");
         serial_.setBaudrate(115200);
         serial_.setTimeout(timeout);
         if (serial_.isOpen())
@@ -49,6 +49,7 @@ namespace sp_referee
         robot_status_pub_ = nh_.advertise<sp_referee::RobotStatusMsg>("/robot_status", 1);
         power_heat_data_pub_ = nh_.advertise<sp_referee::PowerHeatDataMsg>("/power_heat_data", 1);
         shoot_data_pub_ = nh_.advertise<sp_referee::ShootDataMsg>("/shoot_data", 1);
+        velocity_pub_ = nh_.advertise<geometry_msgs::Twist>("/cmd_cc_velocity", 10);
 
         remote_control_pub_ = nh_.advertise<sp_referee::RemoteControlMsg>("/rc_data", 1);
 

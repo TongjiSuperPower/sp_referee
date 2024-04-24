@@ -22,7 +22,9 @@
 // #include "rm_referee/common/data.h"
 // #include "rm_referee/referee_base.h"
 #include <sp_common/ManipulatorCmd.h>
-
+#include <eigen3/Eigen/Core>
+#include <eigen3/Eigen/Geometry>
+#include <geometry_msgs/Twist.h>
 
 namespace sp_referee
 {
@@ -137,7 +139,14 @@ namespace sp_referee
             sp_referee::RadarCmdMsg radar_cmd_ref_;
             sp_referee::MapRobotDataMsg map_robot_data_ref_;
             sp_referee::MapDataMsg map_data_ref_;
-            
+
+            Eigen::Matrix3d last_matrix{};
+            Eigen::Matrix3d current_matrix{};
+            ros::Time last_time{};
+            ros::Time current_time{};
+            ros::Publisher velocity_pub_;
+            geometry_msgs::Twist cmd_velocity{};
+
             enum
             {
                 MAUL,

@@ -19,6 +19,8 @@ referee: #radar
     - 0x020E # RadarInfo
 
     - 0x0301 # RobotInteractionData
+    - 0x0302 # CustomRobotData
+
 
   write:
     - 0x0301 # RobotInteractionData
