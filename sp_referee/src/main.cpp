@@ -11,19 +11,18 @@ int main(int argc, char** argv)
   ros::init(argc, argv, "sp_referee");  // sp_referee
   ros::NodeHandle nh("~");
   sp_referee::Referee referee;
-  ros::Rate loop_rate(80);
+  ros::Rate loop_rate(50);
   referee.init();
   while (ros::ok())
   {
-    
     referee.read();
-    // ROS_INFO_STREAM("referee.getImageTrasmission()" << referee.getImageTrasmission());
-    // if (referee.getImageTrasmission())
-    //referee.readImageTrasmission();
+    if (referee.getImageTrasmission())
+      referee.readImageTrasmission();
     ros::spinOnce();
     //referee.write();
-    //referee.sendUi(); 
     referee.sendString();
+    referee.sendLines(); 
+    referee.sendGraphs(); 
     loop_rate.sleep();
   }
 

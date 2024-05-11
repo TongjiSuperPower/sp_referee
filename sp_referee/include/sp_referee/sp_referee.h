@@ -25,7 +25,8 @@
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/Geometry>
 #include <geometry_msgs/Twist.h>
-
+#include <std_msgs/Float64MultiArray.h>
+#include <std_msgs/Bool.h>
 namespace sp_referee
 {
     class Referee
@@ -40,8 +41,14 @@ namespace sp_referee
             void write();
 
             void sendUi();
+
+            void sendGraphs();
             
             void sendString();
+
+            void sendLines();
+
+            void sendCorner();
 
             bool getImageTrasmission();
 
@@ -72,6 +79,14 @@ namespace sp_referee
             void updateUI(UIConfig &config);
 
             void deleteUI(UIConfig &config);
+
+            void jointPosCallback(const std_msgs::Float64MultiArray::ConstPtr &msg);
+
+            void visionCornerCallback(const std_msgs::Float64MultiArray::ConstPtr &msg);
+
+            void cmdPumpCallback(const std_msgs::Bool::ConstPtr &msg);
+
+            void cmdRodCallback(const std_msgs::Bool::ConstPtr &msg);
 
             void manipulatorCmdCallback(const sp_common::ManipulatorCmd::ConstPtr &msg);
 
@@ -117,7 +132,12 @@ namespace sp_referee
 
             Check check_;
 
-            std::vector<UIConfig> mode_ui_;
+            std::vector<UIConfig> string_ui_;
+
+            std::vector<UIConfig> graphs_ui_;
+
+            std::vector<UIConfig> lines_ui_;
+            int frequency_num_ = 0;
 
             std::vector<uint16_t> read_cmd_;
             std::vector<uint16_t> write_cmd_;
@@ -133,6 +153,18 @@ namespace sp_referee
             ros::Subscriber map_data_sub_;
 
             ros::Subscriber manipulator_cmd_sub_;
+            ros::Subscriber joint_pos_sub_;
+            ros::Subscriber vision_corner_sub_;
+            ros::Subscriber cmd_pump_sub_;
+            ros::Subscriber cmd_rod_sub_;
+             
+
+            std_msgs::Float64MultiArray joint_pos_;
+            std_msgs::Float64MultiArray vision_corner_;
+            std_msgs::Bool cmd_pump_;
+            std_msgs::Bool cmd_rod_;
+
+      
 
             sp_common::ManipulatorCmd manipulator_cmd_;
 

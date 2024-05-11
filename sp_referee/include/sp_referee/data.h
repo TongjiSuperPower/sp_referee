@@ -36,6 +36,7 @@ namespace sp_referee
         uint32_t semi_x_axis_ : 11;
         uint32_t semi_y_axis_ : 11;
         std::string context_;
+        uint8_t frequency_;
         int64_t seq;
     };
 

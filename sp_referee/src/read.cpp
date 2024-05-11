@@ -10,8 +10,8 @@ namespace sp_referee
 
     void Referee::read()
     {
-        
 
+        
         if (serial_.available())
         {
             rx_len_ = static_cast<int>(serial_.available());
@@ -56,13 +56,12 @@ namespace sp_referee
     {
         if (image_transmission_.available())
         {
-            //rx_len_ = static_cast<int>(serial_.available());
-            // serial_.read(rx_buffer_, rx_len_);
+            rx_len_ = static_cast<int>(image_transmission_.available());
+            image_transmission_.read(rx_buffer_, rx_len_);
         }
         else
         {
-            // return;
-
+            return;
         }
     
 
@@ -82,9 +81,7 @@ namespace sp_referee
         for (int k_i = 0; k_i < k_unpack_buffer_length_ - frame_length_; ++k_i)
         {
             if (unpack_buffer_[k_i] == 0xA5)
-            {
-                // ROS_INFO_STREAM("AAAAAAA")>;
-             
+            {           
                 frame_len = unpack(&unpack_buffer_[k_i]);
                 if (frame_len != -1)
                     k_i += frame_len;
@@ -98,19 +95,16 @@ namespace sp_referee
     // | frame_header:5 bytes | cmd_id:2 bytes | data: n bytes | frame_tail: 2 bytes |
 
     int Referee::unpack(uint8_t* rx_data)
-    {                // cmd_id = (rx_data[6] << 8 | rx_data[5]);
-                // ROS_INFO_STREAM(std::hex <<"CMD_ID:"<< cmd_id);
+    {                
         uint16_t cmd_id;
         int frame_len;
         sp_referee::FrameHeader frame_header;
 
         memcpy(&frame_header, rx_data, frame_header_length_);
-                // cmd_id = (rx_data[6] << 8 | rx_data[5]);+
-        ROS_INFO_STREAM(std::hex <<"CMD_ID if前:"<< cmd_id);
 
         if (static_cast<bool>(check_.verifyCRC8CheckSum(rx_data, frame_header_length_)))
         {
-            //ROS_INFO_STREAM(static_cast<uint16_t>(frame_header.data_length_));
+       
             if (frame_header.data_length_ > 256)  // temporary and inaccurate value
             {
                 //ROS_INFO_STREAM("discard possible wrong frames, appropriate data length: " << frame_header.data_length_);
@@ -426,6 +420,7 @@ namespace sp_referee
                     }
                     case sp_referee::CUSTOM_ROBOT_DATA_CMD:
                     {
+                        ROS_INFO_STREAM("0X302");
                         sp_referee::CustomRobotData custom_robot_data;
                         sp_referee::CustomRobotDataMsg custom_robot_data_ref;
                         memcpy(&custom_robot_data_ref, rx_data + 7, sizeof(sp_referee::CustomRobotDataMsg));
@@ -604,8 +599,8 @@ namespace sp_referee
                 break;
         }
 
-        robot_info_.robot_id_ = sp_referee::BLUE_INFANTRY_3;
-        robot_info_.client_id_ = sp_referee::BLUE_INFANTRY_3_CLIENT;
+        robot_info_.robot_id_ = sp_referee::RED_ENGINEER;
+        robot_info_.client_id_ = sp_referee::RED_ENGINEER_CLIENT;
     
     }
 

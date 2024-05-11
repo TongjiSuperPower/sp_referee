@@ -96,7 +96,6 @@ namespace sp_referee
 
             try
             {
-                ROS_INFO_STREAM("AAA"<<frame_len);
                 serial_.write(tx_buffer_, 18);
             }
             catch (serial::PortNotOpenedException& e)
@@ -125,8 +124,8 @@ namespace sp_referee
          
         check_.appendCRC16CheckSum(tx_buffer, frame_header_length_ + cmd_id_length_ + len + frame_tail_length_);
         // for (int i = 0; i < frame_header_length_ + cmd_id_length_ + len + frame_tail_length_ + 2 ; i++)
-                // ROS_INFO_STREAM(std::hex<<int(tx_buffer[i]));
-            // ROS_INFO_STREAM("----------------------------------");
+        //         ROS_INFO_STREAM(std::hex<<int(tx_buffer[i]));
+        //     ROS_INFO_STREAM("----------------------------------");
     }
 
 

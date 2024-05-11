@@ -1,5 +1,5 @@
 referee: #radar
-  use_image_transmission_link: false
+  use_image_transmission_link: true
   read:
     - 0x0001 # GameStatus
     - 0x0002 # GameResult
@@ -27,70 +27,89 @@ referee: #radar
     #- 0x0305 # MapRobotData
 
   ui:
-    mode:
-      # chassis: # chassis mode display
-      #   id: 0x010000
-      #   figure_type: circle
-      #   layer: 0
-      #   color: white
-      #   width: 15
-      #   radius: 40
-      #   start_position: 
-      #   - 400  
-      #   - 700
-      #  context: chassis
-      chassis: # chassis mode display
-        id: 0x010000
-        figure_type: string
-        layer: 0
-        color: white
-        width: 2
-        size: 20
-        length: 16
-        start_position: 
-        - 100  
-        - 900
-        context: CHASSIS:NOFOLLOW
-      # gimbal:
-      #   id: 200 # gimbal mode display
-      #   figure_type: string
-      #   layer: 0
-      #   color: white
-      #   width: 2
-      #   size: 20
-      #   length: 16
-      #   start_position: 
-      #   - 100  
-      #   - 720
-      #   context: GIMBAL:
+    string:
       manipulator:
-        id: 0x040000 # maipulator mode display
+        id: 0x010001 # maipulator mode display
         figure_type: string
         layer: 0
         color: white
         width: 2
-        size: 20
-        length: 17
+        size: 25
+        length: 11
         start_position: 
         - 100  
-        - 870
-        context: MANIPULATOR:JOINT
-    # fixed:
-    #   401:
-    #     figure_type: string
-    #     layer: 0
-    #     color: 8
-    #     width: 10
-    #     start_position: {1500, 700}
-    #     context: pump
+        - 850
+        context: MANIPULATOR
+        frequency: 49
 
-    #   410: # left line
-    #     figure_type: line
-    #     layer: 0
-    #     color: 8
-    #     width: 10
-    #     start_position: {560, 0}
-    #     end_position: {760, 450}
+      pitch:
+        id: 0x010002 # maipulator mode display
+        figure_type: string
+        layer: 0
+        color: white
+        width: 2
+        size: 25
+        length: 5
+        start_position: 
+        - 1200 
+        - 800
+        context: PITCH
+        frequency: 5
+    
+      pump:
+        id: 0x010003 # maipulator mode display
+        figure_type: string
+        layer: 0
+        color: white
+        width: 2
+        size: 25
+        length: 4
+        start_position: 
+        - 1600 
+        - 820
+        context: PUMP
+        frequency: 55
+
+      rod:
+        id: 0x010004 # maipulator mode display
+        figure_type: string
+        layer: 0
+        color: white
+        width: 2
+        size: 25
+        length: 3
+        start_position: 
+        - 1600 
+        - 750
+        context: ROD
+        frequency: 57
+
+      
+    graphs:
+      pump:
+        id: 0x060001 # maipulator mode display
+        figure_type: circle
+        layer: 0
+        color: green
+        width: 15
+        radius: 20
+        center_position: 
+        - 1750  
+        - 780
+        frequency: 51
+
+      rod:
+        id: 0x060002 # maipulator mode display
+        figure_type: circle
+        layer: 0
+        color: purple
+        width: 15
+        radius: 20
+        center_position: 
+        - 1750  
+        - 730
+        frequency: 59
+
 
     #   411: # right line
     #     figure_type: line
@@ -99,5 +118,97 @@ referee: #radar
     #     width: 10
     #     start_position: {1360, 0}
     #     end_position: {1160, 450}
+    lines:
+      line1:
+        id: 0x030001 # maipulator mode display
+        figure_type: line
+        layer: 0
+        color: yellow
+        width: 1
+        start_position: 
+        - 900  
+        - 250
+        end_position: 
+        - 870  
+        - 0
+        frequency: 101
+      line2:
+        id: 0x030002 # maipulator mode display
+        figure_type: line
+        layer: 0
+        color: yellow
+        width: 1
+        start_position: 
+        - 1125 
+        - 250
+        end_position: 
+        - 1300  
+        - 0
+        frequency: 105
+      line3:
+        id: 0x030003 # maipulator mode display
+        figure_type: line
+        layer: 0
+        color: yellow
+        width: 1
+        start_position: 
+        - 880  
+        - 800
+        end_position: 
+        - 880  
+        - 400
+        frequency: 107
+      line4:
+        id: 0x030004 # maipulator mode display
+        figure_type: line
+        layer: 0
+        color: yellow
+        width: 1
+        start_position: 
+        - 980
+        - 800
+        end_position: 
+        - 980  
+        - 400
+        frequency: 109
+      line5:
+        id: 0x030005 # maipulator mode display
+        figure_type: line
+        layer: 0
+        color: yellow
+        width: 1
+        start_position: 
+        - 1080  
+        - 800
+        end_position: 
+        - 1080  
+        - 400
+        frequency: 113
+      line6:
+        id: 0x030006 # maipulator mode display
+        figure_type: line
+        layer: 0
+        color: yellow
+        width: 1
+        start_position: 
+        - 1200  
+        - 700
+        end_position: 
+        - 1600  
+        - 700
+        frequency: 117
+      line7:
+        id: 0x030007 # maipulator mode display
+        figure_type: line
+        layer: 0
+        color: yellow
+        width: 1
+        start_position: 
+        - 1200  
+        - 700
+        end_position: 
+        - 1600  
+        - 700
+        frequency: 119
 
 
