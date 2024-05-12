@@ -599,8 +599,8 @@ namespace sp_referee
                 break;
         }
 
-        robot_info_.robot_id_ = sp_referee::RED_ENGINEER;
-        robot_info_.client_id_ = sp_referee::RED_ENGINEER_CLIENT;
+        // robot_info_.robot_id_ = sp_referee::RED_ENGINEER;
+        // robot_info_.client_id_ = sp_referee::RED_ENGINEER_CLIENT;
     
     }
 

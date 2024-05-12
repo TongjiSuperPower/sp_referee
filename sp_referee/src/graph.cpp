@@ -120,6 +120,13 @@ namespace sp_referee
                     else
                         deleteUI(graphs_ui_[i]);    
                 }
+                else if (i == 2)
+                {
+                    if (cmd_deflection_.data)
+                        addUI(graphs_ui_[i]);
+                    else
+                        deleteUI(graphs_ui_[i]);    
+                }
                 
 
                 figure_graphs.interaction_figure_[i].operate_type_ = graphs_ui_[i].operate_type_;

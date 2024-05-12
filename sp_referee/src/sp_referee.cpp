@@ -131,6 +131,10 @@ namespace sp_referee
         cmd_rod_ = *msg;
     }
 
+    void Referee::cmdDeflectionCallback(const std_msgs::Bool::ConstPtr &msg)
+    {
+        cmd_deflection_ = *msg;
+    }
 
     void Referee::manipulatorCmdCallback(const sp_common::ManipulatorCmd::ConstPtr &msg)
     {

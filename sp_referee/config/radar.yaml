@@ -68,7 +68,7 @@ referee: #radar
         - 1600 
         - 820
         context: PUMP
-        frequency: 55
+        frequency: 31
 
       rod:
         id: 0x010004 # maipulator mode display
@@ -82,7 +82,21 @@ referee: #radar
         - 1600 
         - 750
         context: ROD
-        frequency: 57
+        frequency: 41
+
+      deflection:
+        id: 0x010005 # maipulator mode display
+        figure_type: string
+        layer: 0
+        color: white
+        width: 2
+        size: 25
+        length: 3
+        start_position: 
+        - 1600 
+        - 680
+        context: DEF
+        frequency: 37
 
       
     graphs:
@@ -108,6 +122,18 @@ referee: #radar
         center_position: 
         - 1750  
         - 730
+        frequency: 59
+
+      deflection:
+        id: 0x060003 # maipulator mode display
+        figure_type: circle
+        layer: 0
+        color: orange
+        width: 15
+        radius: 20
+        center_position: 
+        - 1750  
+        - 680
         frequency: 59
 
 

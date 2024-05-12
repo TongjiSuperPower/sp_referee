@@ -88,6 +88,8 @@ namespace sp_referee
 
             void cmdRodCallback(const std_msgs::Bool::ConstPtr &msg);
 
+            void cmdDeflectionCallback(const std_msgs::Bool::ConstPtr &msg);
+
             void manipulatorCmdCallback(const sp_common::ManipulatorCmd::ConstPtr &msg);
 
             void radarCmdCallback(const sp_referee::RadarCmdMsg::ConstPtr &msg);
@@ -157,12 +159,14 @@ namespace sp_referee
             ros::Subscriber vision_corner_sub_;
             ros::Subscriber cmd_pump_sub_;
             ros::Subscriber cmd_rod_sub_;
+            ros::Subscriber cmd_deflection_sub_;
              
 
             std_msgs::Float64MultiArray joint_pos_;
             std_msgs::Float64MultiArray vision_corner_;
             std_msgs::Bool cmd_pump_;
             std_msgs::Bool cmd_rod_;
+            std_msgs::Bool cmd_deflection_;
 
       
 
