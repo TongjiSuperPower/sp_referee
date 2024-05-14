@@ -116,7 +116,7 @@ namespace sp_referee
             {
                
                 cmd_id = (rx_data[6] << 8 | rx_data[5]);
-                ROS_INFO_STREAM(std::hex <<"CMD_ID:"<< cmd_id);
+                //ROS_INFO_STREAM(std::hex <<"CMD_ID:"<< cmd_id);
 
                 auto it = std::find(read_cmd_.begin(), read_cmd_.end(), cmd_id);
                 if ((it == read_cmd_.end()))
@@ -599,8 +599,8 @@ namespace sp_referee
                 break;
         }
 
-        // robot_info_.robot_id_ = sp_referee::RED_ENGINEER;
-        // robot_info_.client_id_ = sp_referee::RED_ENGINEER_CLIENT;
+        // robot_info_.robot_id_ = sp_referee::BLUE_ENGINEER;
+        // robot_info_.client_id_ = sp_referee::BLUE_ENGINEER_CLIENT;
     
     }
 

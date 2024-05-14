@@ -217,11 +217,11 @@ referee: #radar
         color: yellow
         width: 1
         start_position: 
-        - 1200  
-        - 700
+        - 780  
+        - 800
         end_position: 
-        - 1600  
-        - 700
+        - 780  
+        - 400
         frequency: 117
       line7:
         id: 0x030007 # maipulator mode display
@@ -230,11 +230,11 @@ referee: #radar
         color: yellow
         width: 1
         start_position: 
-        - 1200  
-        - 700
+        - 1180  
+        - 800
         end_position: 
-        - 1600  
-        - 700
+        - 1180  
+        - 400
         frequency: 119
 
 
