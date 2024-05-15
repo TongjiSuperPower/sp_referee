@@ -159,7 +159,7 @@ namespace sp_referee
             ros::Subscriber vision_corner_sub_;
             ros::Subscriber cmd_pump_sub_;
             ros::Subscriber cmd_rod_sub_;
-            ros::Subscriber cmd_deflection_sub_;
+            ros::Subscriber cmd_def_sub_;
              
 
             std_msgs::Float64MultiArray joint_pos_;

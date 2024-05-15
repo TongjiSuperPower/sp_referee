@@ -16,6 +16,7 @@ namespace sp_referee
 
     struct UIConfig
     {
+        std::string name_;
         uint8_t figure_id_[3];
         uint32_t operate_type_ : 3;
         uint32_t figure_type_ : 3;

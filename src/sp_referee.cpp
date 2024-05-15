@@ -73,6 +73,7 @@ namespace sp_referee
         vision_corner_sub_ = nh_.subscribe<std_msgs::Float64MultiArray>("/corner_coordinates", 1, &Referee::visionCornerCallback, this);
         cmd_pump_sub_ = nh_.subscribe<std_msgs::Bool>("/cmd_pump", 1, &Referee::cmdPumpCallback, this);
         cmd_rod_sub_ = nh_.subscribe<std_msgs::Bool>("/cmd_rod", 1, &Referee::cmdRodCallback, this);
+        cmd_def_sub_ = nh_.subscribe<std_msgs::Bool>("/cmd_def", 1, &Referee::cmdDeflectionCallback, this);
         radar_cmd_sub_ = nh_.subscribe<sp_referee::RadarCmdMsg>("/radar_cmd", 1, &Referee::radarCmdCallback, this);
         map_robot_data_sub_ = nh_.subscribe<sp_referee::MapRobotDataMsg>("/map_robot_data", 1, &Referee::mapRobotDataCallback, this);
         map_data_sub_ = nh_.subscribe<sp_referee::MapDataMsg>("/map_data", 1, &Referee::mapDataCallback, this);

@@ -12,6 +12,9 @@ namespace sp_referee
             config.figure_id_[0] = (id >> 0 & 0xFF);
             config.figure_id_[1] = (id >> 8 & 0xFF);
             config.figure_id_[2] = (id >> 16 & 0xFF);
+
+
+            config.name_ =  static_cast<std::string>(graph->first);
             
             if (graph->second.hasMember("figure_type"))
                 config.figure_type_ =  getType(graph->second["figure_type"]);
@@ -96,8 +99,8 @@ namespace sp_referee
             int frame_len = frame_header_length_ + cmd_id_length_ + data_len + frame_tail_length_;
             sp_referee::InteractionFigureTwo figure_graphs{};
             figure_graphs.robot_interaction_data_header_.data_cmd_id_ = sp_referee::INTERACTION_FIGURE_TWO_CMD;
-            figure_graphs.robot_interaction_data_header_.sender_id_ = robot_info_.robot_id_;
-            figure_graphs.robot_interaction_data_header_.receiver_id_ = robot_info_.client_id_;
+            figure_graphs.robot_interaction_data_header_.sender_id_ = sp_referee::BLUE_ENGINEER;
+            figure_graphs.robot_interaction_data_header_.receiver_id_ = sp_referee::BLUE_ENGINEER_CLIENT;
             for (int i = 0; i < 2; i++)
             {
                 figure_graphs.interaction_figure_[i].figure_name_[0] = graphs_ui_[i].figure_id_[0];
@@ -106,27 +109,21 @@ namespace sp_referee
                 
                 figure_graphs.interaction_figure_[i].figure_type_ = graphs_ui_[i].figure_type_;
 
-                if (i == 0)
+                if (graphs_ui_[i].name_ == "pump")
                 {
                     if (cmd_pump_.data)
                         addUI(graphs_ui_[i]);
                     else
                         deleteUI(graphs_ui_[i]);    
                 }
-                else if (i == 1)
-                {
-                    if (cmd_rod_.data)
-                        addUI(graphs_ui_[i]);
-                    else
-                        deleteUI(graphs_ui_[i]);    
-                }
-                else if (i == 2)
+                else if (graphs_ui_[i].name_ == "deflection")
                 {
                     if (cmd_deflection_.data)
                         addUI(graphs_ui_[i]);
                     else
                         deleteUI(graphs_ui_[i]);    
                 }
+
                 
 
                 figure_graphs.interaction_figure_[i].operate_type_ = graphs_ui_[i].operate_type_;
@@ -166,8 +163,8 @@ namespace sp_referee
             int frame_len = frame_header_length_ + cmd_id_length_ + data_len + frame_tail_length_;
             sp_referee::InteractionFigureSeven figure_lines{};
             figure_lines.robot_interaction_data_header_.data_cmd_id_ = sp_referee::INTERACTION_FIGURE_SEVEN_CMD;
-            figure_lines.robot_interaction_data_header_.sender_id_ = robot_info_.robot_id_;
-            figure_lines.robot_interaction_data_header_.receiver_id_ = robot_info_.client_id_;
+            figure_lines.robot_interaction_data_header_.sender_id_ = sp_referee::BLUE_ENGINEER;
+            figure_lines.robot_interaction_data_header_.receiver_id_ = sp_referee::BLUE_ENGINEER_CLIENT;
             for (int i = 0; i < lines_ui_.size(); i++)
             {
                 figure_lines.interaction_figure_[i].figure_name_[0] = lines_ui_[i].figure_id_[0];
@@ -287,8 +284,8 @@ namespace sp_referee
                 int frame_len = frame_header_length_ + cmd_id_length_ + data_len + frame_tail_length_;
                 sp_referee::ExtClientCustomCharacter figure_string{};
                 figure_string.robot_interaction_data_header_.data_cmd_id_ = sp_referee::EXT_CLIENT_CUSTOM_CHARACTER_CMD;
-                figure_string.robot_interaction_data_header_.sender_id_ = robot_info_.robot_id_;
-                figure_string.robot_interaction_data_header_.receiver_id_ = robot_info_.client_id_;
+                figure_string.robot_interaction_data_header_.sender_id_ = sp_referee::BLUE_ENGINEER;
+                figure_string.robot_interaction_data_header_.receiver_id_ = sp_referee::BLUE_ENGINEER_CLIENT;
 
                 figure_string.interaction_figure_.figure_name_[0] = string_ui_[i].figure_id_[0];
                 figure_string.interaction_figure_.figure_name_[1] = string_ui_[i].figure_id_[1];
